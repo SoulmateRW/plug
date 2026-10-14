@@ -6,6 +6,7 @@
 <title>图提取 ImageGrab - 电商详情页图片批量下载</title>
 <meta name="description" content="Chrome 扩展：在淘宝、天猫、京东、拼多多商品详情页一键提取图片并批量下载，兼容懒加载，保留原始画质。">
 <meta name="theme-color" content="#4a90e2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect x='2.6' y='2.6' width='122.8' height='122.8' rx='28' fill='%234a90e2'/%3E%3Cpath d='M55.7,24.3h16.6v52.5H55.7z' fill='%23fff'/%3E%3Cpath d='M36.5,70.4h55L64,101.1z' fill='%23fff'/%3E%3Cpath d='M35.8,108.8h56.4v9.6H35.8z' fill='%23fff'/%3E%3C/svg%3E">
 <style>
     :root {
         --accent: #4a90e2;
@@ -58,7 +59,7 @@
         min-height: 64px;
     }
 
-    header img { border-radius: 8px; display: block; }
+    header .logo { display: block; flex: none; }
     header .name { font-weight: 700; font-size: 17px; }
     header nav { margin-left: auto; display: flex; gap: 20px; font-size: 15px; }
     header nav a { text-decoration: none; color: var(--muted); }
@@ -132,7 +133,12 @@
 <body>
 <header>
     <div class="wrap">
-        <img src="../icons/icon128.png" alt="图提取 ImageGrab" width="36" height="36">
+        <svg class="logo" width="36" height="36" viewBox="0 0 128 128" aria-hidden="true" focusable="false">
+            <rect x="2.6" y="2.6" width="122.8" height="122.8" rx="28" fill="#4a90e2"/>
+            <path d="M55.7 24.3h16.6v52.5H55.7z" fill="#fff"/>
+            <path d="M36.5 70.4h55L64 101.1z" fill="#fff"/>
+            <path d="M35.8 108.8h56.4v9.6H35.8z" fill="#fff"/>
+        </svg>
         <span class="name">图提取 ImageGrab</span>
         <nav>
             <a href="#features">功能</a>
