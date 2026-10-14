@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>图提取 ImageGrab - 电商详情页图片批量下载</title>
+<meta name="description" content="Chrome 扩展：在淘宝、天猫、京东、拼多多商品详情页一键提取图片并批量下载，兼容懒加载，保留原始画质。">
+<meta name="theme-color" content="#4a90e2">
+<style>
+    :root {
+        --accent: #4a90e2;
+        --accent-dark: #357abd;
+        --bg: #f5f7fa;
+        --card: #ffffff;
+        --text: #1f2329;
+        --muted: #6b7280;
+        --border: #e5e8ef;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg: #14171c;
+            --card: #1c2027;
+            --text: #e8eaed;
+            --muted: #9aa4b2;
+            --border: #2b313a;
+        }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+        font-size: 16px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); }
+
+    .wrap { max-width: 940px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+        border-bottom: 1px solid var(--border);
+        background: var(--card);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    header .wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 64px;
+    }
+
+    header img { border-radius: 8px; display: block; }
+    header .name { font-weight: 700; font-size: 17px; }
+    header nav { margin-left: auto; display: flex; gap: 20px; font-size: 15px; }
+    header nav a { text-decoration: none; color: var(--muted); }
+    header nav a:hover { color: var(--accent); }
+
+    .hero { padding: 72px 0 56px; text-align: center; }
+    .hero h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.3; margin: 0 0 16px; }
+    .hero p.lede { font-size: 17px; color: var(--muted); max-width: 620px; margin: 0 auto 32px; }
+
+    .actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 28px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--card);
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        transition: transform .15s ease, background .15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn.primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+
+    .note { margin-top: 20px; font-size: 14px; color: var(--muted); }
+
+    section { padding: 48px 0; border-top: 1px solid var(--border); }
+    section h2 { font-size: 22px; margin: 0 0 24px; }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+    }
+
+    .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .card h3 { margin: 0 0 8px; font-size: 16px; }
+    .card p { margin: 0; font-size: 14.5px; color: var(--muted); }
+
+    ol, ul { padding-left: 22px; margin: 0; }
+    li { margin-bottom: 10px; }
+
+    code {
+        background: rgba(127, 127, 127, .14);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: ui-monospace, Consolas, "Courier New", monospace;
+        font-size: .9em;
+        word-break: break-all;
+    }
+
+    footer {
+        border-top: 1px solid var(--border);
+        padding: 32px 0 48px;
+        text-align: center;
+        font-size: 14px;
+        color: var(--muted);
+    }
+</style>
+</head>
+<body>
+<header>
+    <div class="wrap">
+        <img src="../icons/icon128.png" alt="图提取 ImageGrab" width="36" height="36">
+        <span class="name">图提取 ImageGrab</span>
+        <nav>
+            <a href="#features">功能</a>
+            <a href="#install">安装</a>
+            <a href="#notes">注意</a>
+            <a href="https://github.com/SoulmateRW/plug">GitHub</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero wrap">
+        <h1>一键提取电商详情页的所有图片</h1>
+        <p class="lede">在淘宝、天猫、京东、拼多多的商品详情页扫描图片，自由勾选后批量下载，保留原始画质。</p>
+        <p class="actions">
+            <a class="btn primary" href="https://github.com/SoulmateRW/plug/archive/refs/heads/main.zip">下载 ZIP</a>
+            <a class="btn" href="https://github.com/SoulmateRW/plug">查看源码</a>
+        </p>
+        <p class="note">Chrome 扩展，暂未上架应用商店，需以「加载已解压的扩展程序」方式安装。</p>
+    </section>
+
+    <section id="features">
+        <div class="wrap">
+            <h2>功能</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>一键提取</h3>
+                    <p>详情页右下角注入悬浮按钮，点击工具栏上的扩展图标效果相同。</p>
+                </div>
+                <div class="card">
+                    <h3>兼容懒加载</h3>
+                    <p>优先读取 data-src 等懒加载属性并解析 srcset，滚动后再提取结果更完整。</p>
+                </div>
+                <div class="card">
+                    <h3>覆盖背景图</h3>
+                    <p>除 img 标签外还会扫描内联与计算样式里的 background-image。</p>
+                </div>
+                <div class="card">
+                    <h3>自动去重</h3>
+                    <p>同一张图的尺寸后缀与查询参数会归一化合并，只保留分辨率最高的一张。</p>
+                </div>
+                <div class="card">
+                    <h3>原图画质</h3>
+                    <p>直接下载图片原始地址，字节保持原格式不做转码，扩展名与真实格式一致。</p>
+                </div>
+                <div class="card">
+                    <h3>连续编号</h3>
+                    <p>文件名形如 商品图_20261014_0001.jpg，编号跨批次连续，不会互相覆盖。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="install">
+        <div class="wrap">
+            <h2>安装步骤</h2>
+            <ol>
+                <li>点上方「下载 ZIP」并解压，或执行 <code>git clone https://github.com/SoulmateRW/plug.git</code>。</li>
+                <li>打开 <code>chrome://extensions</code>，开启右上角的「开发者模式」。</li>
+                <li>点「加载已解压的扩展程序」，选择含 <code>manifest.json</code> 的那一层目录。</li>
+                <li>打开商品详情页，点右下角「获取图片」，在新打开的页面勾选后点「下载选中」，文件存入浏览器默认下载目录。</li>
+            </ol>
+        </div>
+    </section>
+
+    <section id="notes">
+        <div class="wrap">
+            <h2>需要注意</h2>
+            <ul>
+                <li>提取前先把页面滚到底，让懒加载的图片都加载出来，结果会更完整。</li>
+                <li>图片字节保持原始格式，不做格式转码，因此不会出现「扩展名是 png、内容其实是 jpg」的情况。</li>
+                <li>只采集当前页面，iframe 与 Shadow DOM 内部的图片不会被抓取。</li>
+                <li>若某个图片 CDN 校验 Referer 做防盗链，下载会被拒绝并计入结果里的「失败 N 张」。</li>
+                <li>改动任何文件后，需在 <code>chrome://extensions</code> 点击该扩展卡片上的刷新按钮重新加载。</li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="wrap">
+        开源项目 · <a href="https://github.com/SoulmateRW/plug">github.com/SoulmateRW/plug</a>
+    </div>
+</footer>
+</body>
+</html>
