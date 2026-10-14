@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <title>提取结果 - ImageGrab</title>
+    <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1>共提取到 <span id="img-count">0</span> 张图片</h1>
+        </div>
+        <div class="header-right">
+            <button id="select-all">全选</button>
+            <button id="inverse-select">反选</button>
+            <button id="download-btn" class="primary">下载选中 (0)</button>
+        </div>
+    </header>
+    <p id="empty-state" hidden>还没有提取到图片。回到商品详情页，点击右下角的「获取图片」按钮再试一次。</p>
+    <main id="image-grid"></main>
+    <script src="gallery.js"></script>
+</body>
+</html>
